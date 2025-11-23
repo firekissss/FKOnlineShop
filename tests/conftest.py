@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import pytest
 
 from src.category import Category
@@ -34,3 +37,33 @@ def category_2(product_1):
         [product_1],
     )
     return category2
+
+
+@pytest.fixture
+def tmp_json_file(tmp_path: Path) -> Path:
+    data = [
+        {
+            "name": "Smartphones",
+            "description": "Very expensive low-memory phones",
+            "products": [
+                {
+                    "name": "Samsung",
+                    "description": "10GB",
+                    "price": 10.0,
+                    "quantity": 11,
+                },
+                {
+                    "name": "Iphone",
+                    "description": "20GB",
+                    "price": 20.0,
+                    "quantity": 12,
+                },
+            ],
+        }
+    ]
+
+    file_path = tmp_path / "products.json"
+    with open(file_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False)
+
+    return file_path

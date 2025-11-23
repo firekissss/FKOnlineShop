@@ -1,11 +1,12 @@
 import json
+from pathlib import Path
 from typing import Any, Sequence
 
 from src.category import Category
 from src.product import Product
 
 
-def read_json_file(path: str) -> Any:
+def read_json_file(path: str | Path) -> Any:
     try:
         with open(path, encoding="utf-8") as file:
             return json.load(file)
@@ -15,7 +16,7 @@ def read_json_file(path: str) -> Any:
         raise ValueError(f"Ошибка декодирования JSON в файле {path}")
 
 
-def import_products_from_json_file(path: str) -> Sequence[Category]:
+def import_products_from_json_file(path: str | Path) -> Sequence[Category]:
     products_dict = read_json_file(path)
     categories = []
     for category in products_dict:
