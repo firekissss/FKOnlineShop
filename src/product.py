@@ -11,4 +11,4 @@ class Product:
         self.quantity = quantity
 
     def __repr__(self) -> str:
-        return f"Name: {self.name}. Description: {self.description}. Price: {self.price}. Quantity: {self.quantity}"
+        return f"Name: {self.name}. Description: {self.description}. Price: {self.price}. Quantity: {self.quantity}."

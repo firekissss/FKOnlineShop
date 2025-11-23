@@ -100,3 +100,9 @@ __pycache__/
 # logs
 /logs
 /tests/test_logs/
+
+# data
+/data/
+
+# include example_products.json
+!/data/example_products.json
