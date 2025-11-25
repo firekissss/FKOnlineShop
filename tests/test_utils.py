@@ -3,7 +3,6 @@ from pathlib import Path
 import pytest
 
 from src.category import Category
-from src.product import Product
 from src.utils import import_products_from_json_file, read_json_file
 
 
@@ -42,20 +41,8 @@ def test_import_products_from_json_file_correct(tmp_json_file: Path):
     cat = categories[0]
     assert isinstance(cat, Category)
     assert cat.name == "Smartphones"
-    assert isinstance(cat.products, list)
-    assert len(cat.products) == 2
-
-    prod1 = cat.products[0]
-    assert isinstance(prod1, Product)
-    assert prod1.name == "Samsung"
-    assert isinstance(prod1.quantity, int)
-    assert prod1.price == 10
-
-    prod2 = cat.products[1]
-    assert isinstance(prod2, Product)
-    assert prod2.name == "Iphone"
-    assert isinstance(prod2.price, float)
-    assert prod2.quantity == 12
+    assert isinstance(cat.products, str)
+    assert cat.products == "Samsung, 10.0 руб. Остаток: 11 шт.\nIphone, 30.0 руб. Остаток: 24 шт."
 
 
 def test_import_products_from_json_file_empty_list(tmp_path: Path):
