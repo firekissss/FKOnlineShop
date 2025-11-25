@@ -19,10 +19,16 @@ def read_json_file(path: str | Path) -> Any:
 def import_products_from_json_file(path: str | Path) -> Sequence[Category]:
     products_dict = read_json_file(path)
     categories = []
+
     for category in products_dict:
-        products = []
-        for product in category["products"]:
-            products.append(Product(**product))
+        products: list[Product] = []
+
+        for product_dict in category["products"]:
+            new_product, is_new = Product.new_product(product_dict, products)
+
+            if is_new:
+                products.append(new_product)
+
         category["products"] = products
         categories.append(Category(**category))
 
