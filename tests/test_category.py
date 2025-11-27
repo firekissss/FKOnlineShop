@@ -44,3 +44,9 @@ def test_category_adding_products(category_1, category_2, product_1, product_2):
     assert Category.product_count == 2
     assert category_1.product_count == 2
     assert category_2.product_count == 2
+
+
+def test_string_representation(category_1, product_1, product_2):
+    category_1.add_product(product_1)
+    category_1.add_product(product_2)
+    assert str(category_1) == "Смартфоны, количество продуктов: 13 шт."
