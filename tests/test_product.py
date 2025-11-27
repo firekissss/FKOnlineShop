@@ -81,3 +81,7 @@ def test_price_setter_lowering_confirmation_no(product_1):
 def test_price_setter_increase(product_1):
     product_1.price = 200000.0
     assert product_1.price == 200000.0
+
+
+def test_string_representation(product_1):
+    assert str(product_1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
