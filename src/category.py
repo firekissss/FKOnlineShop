@@ -22,9 +22,9 @@ class Category:
         output_list = []
         # adding to list is more optimized than adding to a string
         for product in self.__products:
-            output_list.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
+            output_list.append(str(product))
 
-        return "".join(output_list)
+        return "\n".join(output_list)
 
     @property
     def _products_list(self) -> list[Product]:
