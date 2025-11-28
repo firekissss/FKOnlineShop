@@ -55,6 +55,20 @@ def main() -> None:
     new_product.price = 0
     print(new_product.price)
 
+    print("\n")
+
+    print(str(category1))
+
+    print("\n")
+
+    print(category1.products)
+
+    print("\n")
+
+    print(product1 + product2)
+    print(product1 + product3)
+    print(product2 + product3)
+
 
 if __name__ == "__main__":
     main()

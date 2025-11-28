@@ -1,4 +1,5 @@
 from src.category import Category
+from src.iterators import CategoryIterator
 
 
 # test initializing
@@ -44,3 +45,20 @@ def test_category_adding_products(category_1, category_2, product_1, product_2):
     assert Category.product_count == 2
     assert category_1.product_count == 2
     assert category_2.product_count == 2
+
+
+def test_string_representation(category_1, product_1, product_2):
+    category_1.add_product(product_1)
+    category_1.add_product(product_2)
+    assert str(category_1) == "Смартфоны, количество продуктов: 13 шт."
+
+
+def test_category_iter_returns_iterator(product_1, product_2, category_1):
+    category_1.add_product(product_1)
+    category_1.add_product(product_2)
+    it = iter(category_1)
+
+    assert isinstance(it, CategoryIterator)
+
+    result = list(category_1)
+    assert result == [product_1, product_2]

@@ -1,3 +1,6 @@
+from typing import Iterator
+
+from src.iterators import CategoryIterator
 from src.product import Product
 
 
@@ -13,6 +16,10 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
+    def __str__(self) -> str:
+        total_quantity = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_quantity} шт."
+
     def add_product(self, product: Product) -> None:
         self.__products.append(product)
         Category.product_count += 1
@@ -22,10 +29,13 @@ class Category:
         output_list = []
         # adding to list is more optimized than adding to a string
         for product in self.__products:
-            output_list.append(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
+            output_list.append(str(product))
 
-        return "".join(output_list)
+        return "\n".join(output_list)
 
     @property
     def _products_list(self) -> list[Product]:
         return self.__products
+
+    def __iter__(self) -> Iterator[Product]:
+        return CategoryIterator(self)
