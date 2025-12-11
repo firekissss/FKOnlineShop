@@ -62,8 +62,8 @@ class Smartphone(Product):
         quantity: int,
         efficiency: float,
         model: str,
-        memory: float,
-        color: str | None,
+        memory: int,
+        color: str | None = None,
     ) -> None:
         super().__init__(name, description, __price, quantity, color)
         self.efficiency = efficiency
@@ -80,7 +80,7 @@ class LawnGrass(Product):
         quantity: int,
         country: str,
         germination_period: str,
-        color: str | None,
+        color: str | None = None,
     ) -> None:
         super().__init__(name, description, __price, quantity, color)
         self.country = country
