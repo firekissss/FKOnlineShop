@@ -1,3 +1,5 @@
+import pytest
+
 from src.category import Category
 from src.iterators import CategoryIterator
 
@@ -45,6 +47,21 @@ def test_category_adding_products(category_1, category_2, product_1, product_2):
     assert Category.product_count == 2
     assert category_1.product_count == 2
     assert category_2.product_count == 2
+
+
+def test_category_add_something_else(category_1):
+    class NotAProduct:
+        pass
+
+    something = NotAProduct()
+
+    with pytest.raises(TypeError) as exc_info:
+        category_1.add_product(something)
+
+    expected_message = (
+        f"Ожидался объект класса Product или его подкласса, " f"получен объект типа: {something.__class__.__name__}"
+    )
+    assert str(exc_info.value) == expected_message
 
 
 def test_string_representation(category_1, product_1, product_2):

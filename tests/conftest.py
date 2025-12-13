@@ -5,13 +5,38 @@ from typing import Dict
 import pytest
 
 from src.category import Category
-from src.product import Product
+from src.product import LawnGrass, Product, Smartphone
+
+
+# ─────────────────────────────────────────────────────────────
+# reset class variables
+# ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture(autouse=True)
 def reset_class_counts():
     Category.category_count = 0
     Category.product_count = 0
+
+
+# ─────────────────────────────────────────────────────────────
+# for parametrizing following fixtures
+# ─────────────────────────────────────────────────────────────
+
+
+@pytest.fixture
+def first(request):
+    return request.getfixturevalue(request.param)
+
+
+@pytest.fixture
+def second(request):
+    return request.getfixturevalue(request.param)
+
+
+# ─────────────────────────────────────────────────────────────
+# following fixtures:
+# ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture
@@ -24,6 +49,37 @@ def product_1():
 def product_2():
     product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
     return product2
+
+
+@pytest.fixture
+def smartphone_1():
+    smartphone_1 = Smartphone(
+        "Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5, 95.5, "S23 Ultra", 256, "Серый"
+    )
+    return smartphone_1
+
+
+@pytest.fixture
+def smartphone_2():
+    smartphone_2 = Smartphone("Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space")
+    return smartphone_2
+
+
+@pytest.fixture
+def lawngrass_1():
+    lawngrass_1 = LawnGrass("Газонная трава", "Элитная трава для газона", 500.0, 20, "Россия", "7 дней", "Зеленый")
+    return lawngrass_1
+
+
+@pytest.fixture
+def lawngrass_2():
+    lawngrass_2 = LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
+    return lawngrass_2
+
+
+# ─────────────────────────────────────────────────────────────
+# category fixtures
+# ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture
@@ -44,6 +100,11 @@ def category_2():
         [],
     )
     return category2
+
+
+# ─────────────────────────────────────────────────────────────
+# list of categories
+# ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture
@@ -74,6 +135,11 @@ def data_list_of_categories() -> list[Dict[str, str | list[Dict[str, str | int |
             ],
         }
     ]
+
+
+# ─────────────────────────────────────────────────────────────
+# TMP JSOM FILE
+# ─────────────────────────────────────────────────────────────
 
 
 @pytest.fixture
