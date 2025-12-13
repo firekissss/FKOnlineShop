@@ -15,6 +15,11 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Product) -> float:
+        if not isinstance(self, Product) or not isinstance(other, Product):
+            raise TypeError(
+                f"Оба объекта должны быть экземплярами класса Product. Получены объекты типа {type(self).__name__} и {type(other).__name__}"
+            )
+
         self_type = type(self)
         other_type = type(other)
 
