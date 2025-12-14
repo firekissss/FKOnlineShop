@@ -21,6 +21,11 @@ class Category:
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, product: Product) -> None:
+        if not isinstance(product, Product):
+            raise TypeError(
+                f"Ожидался объект класса Product или его подкласса, " f"получен объект типа: {type(product).__name__}"
+            )
+
         self.__products.append(product)
         Category.product_count += 1
 

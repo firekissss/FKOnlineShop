@@ -4,16 +4,31 @@ from typing import Dict, Sequence
 
 
 class Product:
-    def __init__(self, name: str, description: str, price: float, quantity: int) -> None:
+    def __init__(self, name: str, description: str, price: float, quantity: int, color: str | None = None) -> None:
         self.name = name
         self.description = description
         self.__price = price
         self.quantity = quantity
+        self.color = color
 
     def __str__(self) -> str:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Product) -> float:
+        if not isinstance(self, Product) or not isinstance(other, Product):
+            raise TypeError(
+                f"Оба объекта должны быть экземплярами класса Product. Получены объекты типа {type(self).__name__} и {type(other).__name__}"
+            )
+
+        self_type = type(self)
+        other_type = type(other)
+
+        if self_type != other_type:
+            raise TypeError(
+                f"Можно сложить только 2 одинаковых товара. "
+                f"Получены объекты {self_type.__name__} и {other_type.__name__}"
+            )
+
         return self.quantity * self.__price + other.quantity * other.__price
 
     @property
@@ -50,3 +65,37 @@ class Product:
                 return product, False
 
         return cls(name, description, price, quantity), True
+
+
+class Smartphone(Product):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        __price: float,
+        quantity: int,
+        efficiency: float,
+        model: str,
+        memory: int,
+        color: str | None = None,
+    ) -> None:
+        super().__init__(name, description, __price, quantity, color)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+
+
+class LawnGrass(Product):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        __price: float,
+        quantity: int,
+        country: str,
+        germination_period: str,
+        color: str | None = None,
+    ) -> None:
+        super().__init__(name, description, __price, quantity, color)
+        self.country = country
+        self.germination_period = germination_period
