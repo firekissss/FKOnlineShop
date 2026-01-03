@@ -1,7 +1,13 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Dict, Sequence
+from typing import Any, Dict, Sequence
+
+
+class InitLogMixin:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        print(f"{self.__class__.__name__} создан с параметрами: " f"args={args}, kwargs={kwargs}")
+        super().__init__(*args, **kwargs)
 
 
 class BaseProduct(ABC):
@@ -31,7 +37,7 @@ class BaseProduct(ABC):
         pass
 
 
-class Product(BaseProduct):
+class Product(InitLogMixin, BaseProduct):
     def __init__(self, name: str, description: str, price: float, quantity: int, color: str | None = None) -> None:
         super().__init__(name, description, price, quantity)
         self.color = color
