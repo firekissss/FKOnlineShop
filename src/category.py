@@ -1,17 +1,17 @@
 from typing import Iterator
 
+from src.container import ProductContainer
 from src.iterators import CategoryIterator
 from src.product import Product
 
 
-class Category:
+class Category(ProductContainer):
     # class attributes
     category_count: int = 0
     product_count: int = 0
 
     def __init__(self, name: str, description: str, products: list[Product]) -> None:
-        self.name = name
-        self.description = description
+        super().__init__(name, description)
         self.__products = products
         Category.category_count += 1
         Category.product_count += len(self.__products)
