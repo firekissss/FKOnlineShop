@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.product import LawnGrass, Product, Smartphone
+from src.product import BaseProduct, LawnGrass, Product, Smartphone
 
 
 # test initialization
@@ -170,3 +170,24 @@ def test_add_non_product(smartphone_1):
         smartphone_1 + not_product
 
     assert str(exc_info.value).startswith("Оба объекта должны быть экземплярами класса Product. Получены объекты типа")
+
+
+def test_init_log_mixin_prints_creation_info(capsys):
+    Product("продукт", "описание", 99999.9, 10)
+
+    captured = capsys.readouterr()
+
+    assert "Product создан с параметрами" in captured.out
+    assert "продукт" in captured.out
+    assert "99999.9" in captured.out
+
+
+def test_base_product_cannot_be_instantiated():
+    with pytest.raises(TypeError):
+        BaseProduct("something", "something else", 1000000000000000.0, 10000000)
+
+
+def test_product_is_instance_of_base_product():
+    product = Product("something", "something else", 1000000000000000.0, 10000000)
+
+    assert isinstance(product, BaseProduct)
