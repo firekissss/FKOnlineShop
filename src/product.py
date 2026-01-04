@@ -1,18 +1,49 @@
 from __future__ import annotations
 
-from typing import Dict, Sequence
+from abc import ABC, abstractmethod
+from typing import Any, Dict, Sequence
 
 
-class Product:
-    def __init__(self, name: str, description: str, price: float, quantity: int, color: str | None = None) -> None:
+class InitLogMixin:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
+        print(f"{self.__class__.__name__} создан с параметрами: " f"args={args}, kwargs={kwargs}")
+        super().__init__(*args, **kwargs)
+
+
+class BaseProduct(ABC):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        price: float,
+        quantity: int,
+    ) -> None:
         self.name = name
         self.description = description
-        self.__price = price
+        self._price = price
         self.quantity = quantity
+
+    @abstractmethod
+    def __str__(self) -> str:
+        pass
+
+    @abstractmethod
+    def __add__(self, other: Product) -> float:
+        pass
+
+    @property
+    @abstractmethod
+    def price(self) -> float:
+        pass
+
+
+class Product(InitLogMixin, BaseProduct):
+    def __init__(self, name: str, description: str, price: float, quantity: int, color: str | None = None) -> None:
+        super().__init__(name, description, price, quantity)
         self.color = color
 
     def __str__(self) -> str:
-        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+        return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Product) -> float:
         if not isinstance(self, Product) or not isinstance(other, Product):
@@ -29,11 +60,11 @@ class Product:
                 f"Получены объекты {self_type.__name__} и {other_type.__name__}"
             )
 
-        return self.quantity * self.__price + other.quantity * other.__price
+        return self.quantity * self._price + other.quantity * other._price
 
     @property
     def price(self) -> float:
-        return self.__price
+        return self._price
 
     @price.setter
     def price(self, price: float) -> None:
@@ -42,11 +73,11 @@ class Product:
             # делаю по заданию, но лучше в таких случаях кидать ошибку
             print("Цена не должна быть нулевая или отрицательная")
             return
-        if self.__price > price:
+        if self._price > price:
             if input("Понизить цену? (1 для подтверждения)\t") == "1":
-                self.__price = price
+                self._price = price
         else:
-            self.__price = price
+            self._price = price
 
     @classmethod
     def new_product(
@@ -72,14 +103,14 @@ class Smartphone(Product):
         self,
         name: str,
         description: str,
-        __price: float,
+        _price: float,
         quantity: int,
         efficiency: float,
         model: str,
         memory: int,
         color: str | None = None,
     ) -> None:
-        super().__init__(name, description, __price, quantity, color)
+        super().__init__(name, description, _price, quantity, color)
         self.efficiency = efficiency
         self.model = model
         self.memory = memory
@@ -90,12 +121,12 @@ class LawnGrass(Product):
         self,
         name: str,
         description: str,
-        __price: float,
+        _price: float,
         quantity: int,
         country: str,
         germination_period: str,
         color: str | None = None,
     ) -> None:
-        super().__init__(name, description, __price, quantity, color)
+        super().__init__(name, description, _price, quantity, color)
         self.country = country
         self.germination_period = germination_period
