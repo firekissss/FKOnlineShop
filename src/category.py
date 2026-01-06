@@ -44,3 +44,9 @@ class Category(ProductContainer):
 
     def __iter__(self) -> Iterator[Product]:
         return CategoryIterator(self)
+
+    def avg_price(self) -> float:
+        try:
+            return sum(current_product.price for current_product in self.__products) / len(self.__products)
+        except ZeroDivisionError:
+            return 0
