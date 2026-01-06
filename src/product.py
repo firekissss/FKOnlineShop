@@ -3,6 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Sequence
 
+from src.exceptions import ZeroQuantityError
+
 
 class InitLogMixin:
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -19,7 +21,7 @@ class BaseProduct(ABC):
         quantity: int,
     ) -> None:
         if quantity <= 0:
-            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+            raise ZeroQuantityError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self._price = price
