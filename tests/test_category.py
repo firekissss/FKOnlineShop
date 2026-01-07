@@ -2,9 +2,25 @@ import pytest
 
 from src.category import Category
 from src.iterators import CategoryIterator
+from src.product import Product
 
 
 # test initializing
+
+
+def test_category_create_without_products():
+    category = Category("empty", "no products", [])
+
+    assert category.products == ""
+
+
+def test_category_add_zero_quantity_product(category_1, capsys):
+    product = Product("bad", "desc", 100.0, 1)
+    product.quantity -= 1
+
+    category_1.add_product(product)
+    captured = capsys.readouterr()
+    assert "Нельзя добавить товар с нулевым количеством" in captured.out
 
 
 def test_category(category_1, category_2, product_1, product_2):
@@ -79,3 +95,14 @@ def test_category_iter_returns_iterator(product_1, product_2, category_1):
 
     result = list(category_1)
     assert result == [product_1, product_2]
+
+
+def test_avg_price(category_1, product_1, product_2):
+    category_1.add_product(product_1)
+    category_1.add_product(product_2)
+    assert category_1.avg_price() == 195000.0
+
+
+def test_zero_avg_price():
+    empty_category = Category("name", "description")
+    assert empty_category.avg_price() == 0

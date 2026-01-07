@@ -1,4 +1,5 @@
 from src.category import Category
+from src.exceptions import ZeroQuantityError
 from src.product import LawnGrass, Product, Smartphone
 
 
@@ -236,6 +237,39 @@ def main() -> None:
 
     print(Category.category_count)
     print(Category.product_count)
+
+    # ─────────────────────────────────────────────────────────────
+    # 17.1
+    # ─────────────────────────────────────────────────────────────
+
+    print(
+        """
+# ─────────────────────────────────────────────────────────────
+# 17.1
+# ─────────────────────────────────────────────────────────────
+    """
+    )
+
+    try:
+        Product("Бракованный товар", "Неверное количество", 1000.0, 0)
+    except ZeroQuantityError as e:
+        print(
+            "Возникла ошибка ZeroQuantityError прерывающая работу программы при попытке добавить продукт с нулевым количеством"
+        )
+        print(e)
+    else:
+        print("Не возникла ошибка ZeroQuantityError при попытке добавить продукт с нулевым количеством")
+
+    product1 = Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 5)
+    product2 = Product("Iphone 15", "512GB, Gray space", 210000.0, 8)
+    product3 = Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14)
+
+    category1 = Category("Смартфоны", "Категория смартфонов", [product1, product2, product3])
+
+    print(category1.avg_price())
+
+    category_empty = Category("Пустая категория", "Категория без продуктов", [])
+    print(category_empty.avg_price())
 
 
 if __name__ == "__main__":

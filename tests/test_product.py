@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
+from src.exceptions import ZeroQuantityError
 from src.product import BaseProduct, LawnGrass, Product, Smartphone
 
 
@@ -191,3 +192,9 @@ def test_product_is_instance_of_base_product():
     product = Product("something", "something else", 1000000000000000.0, 10000000)
 
     assert isinstance(product, BaseProduct)
+
+
+def test_zero_quantity_product_error():
+    with pytest.raises(ZeroQuantityError) as exc_info:
+        Product("something", "something else", 1000000000000000.0, 0)
+    assert str(exc_info.value) == "Товар с нулевым количеством не может быть добавлен"

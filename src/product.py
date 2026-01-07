@@ -50,7 +50,7 @@ class Product(InitLogMixin, BaseProduct):
         return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Product) -> float:
-        # self will always be am instance of class Product
+        # self will always be an instance of class Product
         if not isinstance(other, Product):
             raise TypeError(
                 f"Оба объекта должны быть экземплярами класса Product. Получены объекты типа {type(self).__name__} и {type(other).__name__}"

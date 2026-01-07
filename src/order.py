@@ -14,7 +14,7 @@ class Order(ProductContainer):
         super().__init__(name, description)
 
         if quantity <= 0:
-            raise ValueError("Количество товара в заказе должно быть больше 0")
+            raise ZeroQuantityError("Количество товара в заказе должно быть больше 0")
 
         if product.quantity < quantity:
             raise ValueError("Недостаточно товара на складе")
