@@ -3,6 +3,8 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Any, Dict, Sequence
 
+from src.exceptions import ZeroQuantityError
+
 
 class InitLogMixin:
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -18,6 +20,8 @@ class BaseProduct(ABC):
         price: float,
         quantity: int,
     ) -> None:
+        if quantity <= 0:
+            raise ZeroQuantityError("Товар с нулевым количеством не может быть добавлен")
         self.name = name
         self.description = description
         self._price = price
@@ -46,7 +50,8 @@ class Product(InitLogMixin, BaseProduct):
         return f"{self.name}, {self._price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other: Product) -> float:
-        if not isinstance(self, Product) or not isinstance(other, Product):
+        # self will always be an instance of class Product
+        if not isinstance(other, Product):
             raise TypeError(
                 f"Оба объекта должны быть экземплярами класса Product. Получены объекты типа {type(self).__name__} и {type(other).__name__}"
             )

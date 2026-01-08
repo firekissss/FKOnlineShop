@@ -1,6 +1,7 @@
 from typing import Iterator
 
 from src.container import ProductContainer
+from src.exceptions import ZeroQuantityError
 from src.iterators import CategoryIterator
 from src.product import Product
 
@@ -10,9 +11,15 @@ class Category(ProductContainer):
     category_count: int = 0
     product_count: int = 0
 
-    def __init__(self, name: str, description: str, products: list[Product]) -> None:
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        products: list[Product] | None = None,
+    ) -> None:
         super().__init__(name, description)
-        self.__products = products
+        self.__products = list(products) if products is not None else []
+
         Category.category_count += 1
         Category.product_count += len(self.__products)
 
@@ -21,13 +28,28 @@ class Category(ProductContainer):
         return f"{self.name}, количество продуктов: {total_quantity} шт."
 
     def add_product(self, product: Product) -> None:
-        if not isinstance(product, Product):
-            raise TypeError(
-                f"Ожидался объект класса Product или его подкласса, " f"получен объект типа: {type(product).__name__}"
-            )
+        try:
+            if not isinstance(product, Product):
+                raise TypeError(
+                    f"Ожидался объект класса Product или его подкласса, "
+                    f"получен объект типа: {type(product).__name__}"
+                )
 
-        self.__products.append(product)
-        Category.product_count += 1
+            # на данный момент проверка бессмысленна, т.к. отсутствует функционал
+            # изменения количества товара после его создания, а за положительное
+            # количество товара при создании отвечает инициализация класса Product
+            if product.quantity <= 0:
+                raise ZeroQuantityError("Нельзя добавить товар с нулевым количеством")
+
+            self.__products.append(product)
+            Category.product_count += 1
+            print("Товар успешно добавлен")
+
+        except ZeroQuantityError as e:
+            print(e)
+
+        finally:
+            print("Обработка добавления товара завершена")
 
     @property
     def products(self) -> str:
@@ -44,3 +66,9 @@ class Category(ProductContainer):
 
     def __iter__(self) -> Iterator[Product]:
         return CategoryIterator(self)
+
+    def avg_price(self) -> float:
+        try:
+            return sum(current_product.price for current_product in self.__products) / len(self.__products)
+        except ZeroDivisionError:
+            return 0
